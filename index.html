@@ -1,0 +1,21 @@
+<ul id="projects">Loading…</ul>
+<script>
+const user = "yourusername";
+fetch(`https://api.github.com/users/${user}/repos?per_page=100`)
+  .then(r => r.json())
+  .then(repos => {
+    const list = document.getElementById("projects");
+    list.innerHTML = "";
+    repos
+      .filter(r => r.has_pages && r.name !== `${user}.github.io`)
+      .forEach(r => {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = `https://${user}.github.io/${r.name}/`;
+        a.textContent = r.name;
+        li.append(a, document.createElement("br"), r.description || "");
+        list.appendChild(li);
+      });
+  })
+  .catch(() => document.getElementById("projects").textContent = "Couldn't load projects.");
+</script>
