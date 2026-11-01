@@ -251,28 +251,58 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 12px;
-      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
     .card[hidden] { display: none; }
-    .card:hover { border-color: var(--border-hi); box-shadow: var(--shadow); }
+    .card:hover { border-color: var(--border-hi); box-shadow: var(--shadow); transform: translateY(-3px); }
 
+    /* Tile: a picture of the project, with the title over a dark fade.
+       If the picture file is missing, the blue gradient shows instead. */
     .tile {
       position: relative;
-      display: grid;
-      place-items: center;
-      min-height: 9.5rem;
-      padding: 2.75rem 1.25rem 1.5rem;
+      min-height: 10.5rem;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
       background: linear-gradient(135deg, #1b3fa8 0%, #2962ff 100%);
-      text-align: center;
     }
 
+    .tile::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(180deg, rgba(7, 9, 14, 0) 30%, rgba(7, 9, 14, 0.88));
+    }
+
+    .shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
     .tile h2 {
+      position: absolute;
+      z-index: 2;
+      left: 1rem;
+      right: 1rem;
+      bottom: 0.9rem;
       margin: 0;
       color: #fff;
-      font-size: clamp(1.5rem, 3vw, 1.75rem);
+      font-size: clamp(1.4rem, 2.6vw, 1.7rem);
       line-height: 1.15;
       letter-spacing: -0.01em;
+      text-align: left;
       text-wrap: balance;
+    }
+
+    /* Project number chip (typed by you in each card) */
+    .no {
+      position: absolute;
+      top: 0.8rem;
+      right: 0.8rem;
+      z-index: 2;
+      padding: 0.15rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
     }
 
     /* Tag: filled in automatically from the card's data-kind ("pages" or "code") */
@@ -295,6 +325,7 @@
     .card[data-kind="pages"] .badge::before { content: ""; width: 0.45rem; height: 0.45rem; border-radius: 50%; background: #1fa44a; }
     .card[data-kind="pages"] .badge::after { content: "GitHub Pages"; }
     .card[data-kind="code"] .badge::after { content: "Code only"; }
+    .badge { z-index: 2; }
 
     .card-body { display: flex; flex-direction: column; flex: 1; gap: 0.75rem; padding: 1.1rem 1.1rem 1.25rem; }
 
@@ -302,10 +333,10 @@
 
     .url { margin: 0; color: var(--muted); font-size: 0.85rem; overflow-wrap: anywhere; }
 
-    /* Project number and creation date */
+    /* Creation date */
     .stats {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 0.75rem;
       margin: 0;
       padding-top: 0.9rem;
@@ -341,8 +372,10 @@
     6. Light / dark switch ... works on its own, nothing to edit.
     7. Counts and filter ..... the project counts and the All / GitHub Pages / Code only
                               buttons work on their own, nothing to edit.
-    8. Project number ........ typed by you, in the <dd> next to "Project no." in each card.
+    8. Project number ........ typed by you, in the <span class="no"> line of each card.
        Creation date ......... the <time datetime="..."> line inside each card.
+       Tile picture .......... the <img class="shot"> line inside each card.
+                              See TILE PICTURES in the tutorial below.
   -->
 
   <div class="container">
@@ -376,14 +409,15 @@
 
         <article class="card" data-kind="pages">
           <div class="tile">
+            <img class="shot" src="images/vix-60-40.png" alt="Chart from the VIX-adjusted 60/40-portfolio model" loading="lazy" onerror="this.remove()">
             <span class="badge"></span>
+            <span class="no">02</span>
             <h2>VIX-adjusted 60/40-portfolio model</h2>
           </div>
           <div class="card-body">
             <p class="desc">I wanted to find out if rebalancing between a 60/40, 70/30 and a 80/20 portfolio simply by using the VIX-index values results in better risk adjusted results. Latest model available both in code and GitHub pages.</p>
             <p class="url">eeldii.github.io/vix-adjusted-60-40</p>
             <dl class="stats">
-              <div><dt>Project no.</dt><dd>02</dd></div>
               <div><dt>Created</dt><dd><time datetime="2026-10-28">2026-10-28</time></dd></div>
             </dl>
             <div class="actions">
@@ -395,14 +429,15 @@
 
         <article class="card" data-kind="pages">
           <div class="tile">
+            <img class="shot" src="images/rsi-leverage-trade.png" alt="Chart from the RSI leverage-trade model" loading="lazy" onerror="this.remove()">
             <span class="badge"></span>
+            <span class="no">01</span>
             <h2>RSI leverage-trade model</h2>
           </div>
           <div class="card-body">
             <p class="desc">I wanted to see if buying stocks when their RSI is low can beat buying and holding SPY. The latest version includes a simple leveraged trading algorithm. This was my very first project.</p>
             <p class="url">https://github.com/eeldii/Public-RSI-leverage-trade-model</p>
             <dl class="stats">
-              <div><dt>Project no.</dt><dd>01</dd></div>
               <div><dt>Created</dt><dd><time datetime="2026-10-26">2026-10-26</time></dd></div>
             </dl>
             <div class="actions">
@@ -449,9 +484,15 @@
                                     https://api.github.com/repos/eeldii/repo-name
                                     in your browser and read the created_at line,
                                     or use the date of the first commit.
-          <dd>00</dd>               the project number, next to "Project no." Type
-                                    it yourself (for example 03). It is shown
-                                    exactly as you type it.
+          <span class="no">00</span>
+                                    the project number shown on the tile. Type it
+                                    yourself (for example 03). It is shown exactly
+                                    as you type it.
+          <img class="shot" src="images/repo-name.png" ...>
+                                    the picture on the tile. Change repo-name to
+                                    match the file you uploaded (see TILE PICTURES
+                                    below). If the file is missing, the tile just
+                                    shows the blue gradient.
 
         STEP 4. Check the links.
           Template A
@@ -478,8 +519,23 @@
           The filter buttons above the cards (All, GitHub Pages, Code only) use
           data-kind too, and show their own counts. A button is greyed out when
           no project has that tag.
-          The project number and the creation date are the two things you type
-          yourself, inside each card.
+          The project number, the creation date and the tile picture are the
+          things you set yourself, inside each card.
+
+        TILE PICTURES (the image at the top of each card)
+          What to use: a real chart or screenshot from the project, for example
+          the results chart from a model. Dark backgrounds look best, because the
+          title is written over the bottom of the picture.
+          Size: 1200 x 675 pixels (16:9). PNG, JPG or WebP, ideally under 300 KB.
+          Keep the important part of the chart in the top two thirds, because the
+          bottom third is covered by a dark fade and the title.
+          Where it lives: in a folder called images, next to index.html.
+          Name it with lowercase letters and hyphens, for example vix-60-40.png.
+          How to upload: on your computer, make a folder called images and put
+          your pictures in it. In your eeldii.github.io repo click Add file, then
+          Upload files, drag the whole images folder in, and click Commit changes.
+          Then make the src line of the card match the file name exactly, for
+          example src="images/vix-60-40.png". File names are case sensitive.
 
         ORDER, REMOVING AND HIDING
           Cards show in the order they appear in this file, left to right and
@@ -497,6 +553,8 @@
           and the filter buttons hide it.
           Pasting a card inside a comment, so nothing appears.
           Leaving the project number as 00 or reusing one that another card has.
+          Uploading a picture but not changing its name in the src line, or
+          getting the capital letters wrong. The tile then stays blue.
           Writing the date any way other than YYYY-MM-DD (for example 14/03/2025).
           The page then shows what you typed instead of a formatted date.
 
@@ -506,14 +564,15 @@
 
         <article class="card" data-kind="pages">
           <div class="tile">
+            <img class="shot" src="images/repo-name.png" alt="Chart or screenshot from the project" loading="lazy" onerror="this.remove()">
             <span class="badge"></span>
+            <span class="no">00</span>
             <h2>Project name</h2>
           </div>
           <div class="card-body">
             <p class="desc">One or two sentences about what it does.</p>
             <p class="url">eeldii.github.io/repo-name</p>
             <dl class="stats">
-              <div><dt>Project no.</dt><dd>00</dd></div>
               <div><dt>Created</dt><dd><time datetime="YYYY-MM-DD">YYYY-MM-DD</time></dd></div>
             </dl>
             <div class="actions">
@@ -529,14 +588,15 @@
 
         <article class="card" data-kind="code">
           <div class="tile">
+            <img class="shot" src="images/repo-name.png" alt="Chart or screenshot from the project" loading="lazy" onerror="this.remove()">
             <span class="badge"></span>
+            <span class="no">00</span>
             <h2>Project name</h2>
           </div>
           <div class="card-body">
             <p class="desc">One or two sentences about what it does.</p>
             <p class="url">github.com/eeldii/repo-name</p>
             <dl class="stats">
-              <div><dt>Project no.</dt><dd>00</dd></div>
               <div><dt>Created</dt><dd><time datetime="YYYY-MM-DD">YYYY-MM-DD</time></dd></div>
             </dl>
             <div class="actions">
