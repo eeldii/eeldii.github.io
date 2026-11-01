@@ -1,21 +1,56 @@
-<ul id="projects">Loading…</ul>
-<script>
-const user = "yourusername";
-fetch(`https://api.github.com/users/${user}/repos?per_page=100`)
-  .then(r => r.json())
-  .then(repos => {
-    const list = document.getElementById("projects");
-    list.innerHTML = "";
-    repos
-      .filter(r => r.has_pages && r.name !== `${user}.github.io`)
-      .forEach(r => {
-        const li = document.createElement("li");
-        const a = document.createElement("a");
-        a.href = `https://${user}.github.io/${r.name}/`;
-        a.textContent = r.name;
-        li.append(a, document.createElement("br"), r.description || "");
-        list.appendChild(li);
-      });
-  })
-  .catch(() => document.getElementById("projects").textContent = "Couldn't load projects.");
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Projects</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 700px; margin: 3rem auto; padding: 0 1rem; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 1rem 0; padding: 1rem; border: 1px solid #ddd; border-radius: 8px; }
+    a { font-weight: 600; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <h1>My Projects</h1>
+  <p id="status">Loading…</p>
+  <ul id="projects"></ul>
+
+  <script>
+    const user = "eeldii"; // <-- change this
+
+    async function load() {
+      const status = document.getElementById("status");
+      const list = document.getElementById("projects");
+      try {
+        const res = await fetch(`https://api.github.com/users/${user}/repos?per_page=100&sort=updated`);
+        if (!res.ok) throw new Error(`GitHub API returned ${res.status}`);
+        const repos = await res.json();
+
+        const pages = repos.filter(r =>
+          r.has_pages && !r.fork && r.name.toLowerCase() !== `${user.toLowerCase()}.github.io`
+        );
+
+        if (pages.length === 0) {
+          status.textContent = "No repositories with GitHub Pages enabled were found.";
+          return;
+        }
+
+        status.remove();
+        pages.forEach(r => {
+          const li = document.createElement("li");
+          const a = document.createElement("a");
+          a.href = r.homepage || `https://${user}.github.io/${r.name}/`;
+          a.textContent = r.name;
+          li.append(a, document.createElement("br"), r.description || "");
+          list.appendChild(li);
+        });
+      } catch (err) {
+        status.textContent = "Couldn't load projects: " + err.message;
+        console.error(err);
+      }
+    }
+    load();
+  </script>
+</body>
+</html>
