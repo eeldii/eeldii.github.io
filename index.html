@@ -3,32 +3,248 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My Projects</title>
-  <link rel="icon" href="data:,">
+  <title>Projects · eeldii</title>
+  <meta name="description" content="Experiments and tools by eeldii, each hosted on GitHub Pages.">
+  <meta name="theme-color" content="#0a1a3a">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a1a3a'/%3E%3Cpath d='M10 9h12v3.2H13.4v3.2H21v3.2h-7.6v3.2H22V25H10z' fill='white'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 700px; margin: 3rem auto; padding: 0 1rem; line-height: 1.5; }
-    ul { list-style: none; padding: 0; }
-    li { margin: 1rem 0; padding: 1rem; border: 1px solid #ddd; border-radius: 8px; }
-    a { font-weight: 600; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    p { margin: 0.25rem 0 0; color: #555; }
+    :root {
+      --navy: #0a1a3a;
+      --navy-mid: #1b2d54;
+      --ink-soft: #4a5873;
+      --on-navy-soft: #c3cde2;
+      --line: #dde3ee;
+      --white: #ffffff;
+
+      --serif: "Newsreader", Georgia, "Times New Roman", serif;
+      --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+      --gutter: clamp(1.25rem, 5vw, 3rem);
+      --max: 960px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { background: var(--white); }
+
+    body {
+      margin: 0;
+      color: var(--navy);
+      background: var(--white);
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding-left: var(--gutter);
+      padding-right: var(--gutter);
+    }
+
+    /* ---------- Header ---------- */
+
+    .masthead {
+      background: var(--navy);
+      color: var(--white);
+      padding-top: clamp(4rem, 12vw, 8rem);
+      padding-bottom: clamp(2.5rem, 6vw, 4rem);
+    }
+
+    .masthead h1 {
+      margin: 0;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(3.5rem, 13vw, 8rem);
+      line-height: 0.95;
+      letter-spacing: -0.035em;
+    }
+
+    .masthead-foot {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1.5rem 3rem;
+      margin-top: clamp(2.5rem, 6vw, 4.5rem);
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .masthead-foot p {
+      margin: 0;
+      max-width: 38ch;
+      color: var(--on-navy-soft);
+      font-size: 1.05rem;
+    }
+
+    .profile-link {
+      color: var(--white);
+      font-weight: 500;
+      font-size: 0.95rem;
+      text-decoration: underline;
+      text-decoration-color: rgba(255, 255, 255, 0.4);
+      text-underline-offset: 0.35em;
+      transition: text-decoration-color 0.2s ease;
+    }
+
+    .profile-link:hover { text-decoration-color: var(--white); }
+
+    .profile-link:focus-visible {
+      outline: 2px solid var(--white);
+      outline-offset: 4px;
+    }
+
+    /* ---------- Project list ---------- */
+
+    .projects {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .projects li { border-bottom: 1px solid var(--line); }
+
+    .project {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+      background: var(--white);
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .project-inner {
+      display: grid;
+      gap: 0.9rem 3rem;
+      padding-top: 2.25rem;
+      padding-bottom: 2.25rem;
+    }
+
+    @media (min-width: 760px) {
+      .project-inner { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
+    }
+
+    .project-name {
+      margin: 0;
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .project-url {
+      display: block;
+      margin-top: 0.5rem;
+      color: var(--ink-soft);
+      font-size: 0.85rem;
+      overflow-wrap: anywhere;
+      transition: color 0.2s ease;
+    }
+
+    .project-desc {
+      margin: 0;
+      max-width: 52ch;
+      color: var(--ink-soft);
+      font-size: 1rem;
+      transition: color 0.2s ease;
+    }
+
+    /* Row fills navy on hover or keyboard focus */
+    @media (hover: hover) {
+      .project:hover { background: var(--navy); color: var(--white); }
+      .project:hover .project-url,
+      .project:hover .project-desc { color: var(--on-navy-soft); }
+    }
+
+    .project:focus-visible {
+      background: var(--navy);
+      color: var(--white);
+      outline: 3px solid var(--navy-mid);
+      outline-offset: -3px;
+    }
+    .project:focus-visible .project-url,
+    .project:focus-visible .project-desc { color: var(--on-navy-soft); }
+
+    /* ---------- Footer ---------- */
+
+    .site-foot {
+      padding-top: 2.5rem;
+      padding-bottom: 3.5rem;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+    }
+
+    .site-foot a {
+      color: var(--navy);
+      text-underline-offset: 0.3em;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .project, .project-url, .project-desc, .profile-link { transition: none; }
+    }
   </style>
 </head>
 <body>
-  <h1>My Projects</h1>
-  <ul>
-    <li>
-      <a href="https://eeldii.github.io/Public-VIX-60-40/">VIX-adjusted 60/40 portfolio split analysis</a>
-      <p></p>
-    </li>
-    <li>
-      <a href="https://yourusername.github.io/project-two/">Project Two</a>
-      <p>Short description of what it does.</p>
-    </li>
-    <li>
-      <a href="https://yourusername.github.io/project-three/">Project Three</a>
-      <p>Short description of what it does.</p>
-    </li>
-  </ul>
+
+  <header class="masthead">
+    <div class="wrap">
+      <h1>Projects</h1>
+      <div class="masthead-foot">
+        <p>Experiments and tools I’ve built, each one on GitHub. *(some hosted on GitHub Pages)</p>
+        <a class="profile-link" href="https://github.com/eeldii">github.com/eeldii</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <ul class="projects">
+
+      <li>
+        <a class="project" href="https://eeldii.github.io/vix-adjusted-60-40/">
+          <div class="wrap project-inner">
+            <div>
+              <h2 class="project-name">VIX-adjusted 60/40</h2>
+              <span class="project-url">eeldii.github.io/vix-adjusted-60-40</span>
+            </div>
+            <p class="project-desc">I wanted to find out if rebalancing between a 60/40, 70/30 and a 80/20 portfolio simply by using the VIX-index values results in better risk adjusted results.</p>
+          </div>
+        </a>
+      </li>
+
+      <!-- To add a project, copy this whole block, remove the comment markers,
+           and change the href, the URL text, the name and the description.
+
+      <li>
+        <a class="project" href="https://eeldii.github.io/repo-name/">
+          <div class="wrap project-inner">
+            <div>
+              <h2 class="project-name">Project name</h2>
+              <span class="project-url">eeldii.github.io/repo-name</span>
+            </div>
+            <p class="project-desc">One or two sentences about what it does.</p>
+          </div>
+        </a>
+      </li>
+
+      -->
+
+    </ul>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      Built with <a href="https://pages.github.com/">GitHub Pages</a>.
+    </div>
+  </footer>
+
 </body>
 </html>
