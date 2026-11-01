@@ -4,53 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Projects</title>
+  <link rel="icon" href="data:,">
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 700px; margin: 3rem auto; padding: 0 1rem; }
+    body { font-family: system-ui, sans-serif; max-width: 700px; margin: 3rem auto; padding: 0 1rem; line-height: 1.5; }
     ul { list-style: none; padding: 0; }
     li { margin: 1rem 0; padding: 1rem; border: 1px solid #ddd; border-radius: 8px; }
     a { font-weight: 600; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    p { margin: 0.25rem 0 0; color: #555; }
   </style>
 </head>
 <body>
   <h1>My Projects</h1>
-  <p id="status">Loading…</p>
-  <ul id="projects"></ul>
-
-  <script>
-    const user = "eeldii"; // <-- change this
-
-    async function load() {
-      const status = document.getElementById("status");
-      const list = document.getElementById("projects");
-      try {
-        const res = await fetch(`https://api.github.com/users/${user}/repos?per_page=100&sort=updated`);
-        if (!res.ok) throw new Error(`GitHub API returned ${res.status}`);
-        const repos = await res.json();
-
-        const pages = repos.filter(r =>
-          r.has_pages && !r.fork && r.name.toLowerCase() !== `${user.toLowerCase()}.github.io`
-        );
-
-        if (pages.length === 0) {
-          status.textContent = "No repositories with GitHub Pages enabled were found.";
-          return;
-        }
-
-        status.remove();
-        pages.forEach(r => {
-          const li = document.createElement("li");
-          const a = document.createElement("a");
-          a.href = r.homepage || `https://${user}.github.io/${r.name}/`;
-          a.textContent = r.name;
-          li.append(a, document.createElement("br"), r.description || "");
-          list.appendChild(li);
-        });
-      } catch (err) {
-        status.textContent = "Couldn't load projects: " + err.message;
-        console.error(err);
-      }
-    }
-    load();
-  </script>
+  <ul>
+    <li>
+      <a href="https://eeldii.github.io/Public-VIX-60-40/">VIX-adjusted 60/40 portfolio split analysis</a>
+      <p></p>
+    </li>
+    <li>
+      <a href="https://yourusername.github.io/project-two/">Project Two</a>
+      <p>Short description of what it does.</p>
+    </li>
+    <li>
+      <a href="https://yourusername.github.io/project-three/">Project Three</a>
+      <p>Short description of what it does.</p>
+    </li>
+  </ul>
 </body>
 </html>
