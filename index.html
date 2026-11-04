@@ -349,6 +349,44 @@
     .actions { display: flex; gap: 0.5rem; margin-top: auto; padding-top: 0.5rem; }
     .actions .btn { flex: 1; }
 
+    /* ---------- Collapsible in-progress list ---------- */
+
+    .in-progress { width: 100%; max-width: 30rem; margin: 1.75rem auto 0; text-align: left; }
+    .work-panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
+    .work-panel summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 1.1rem;
+      border-radius: 12px;
+      list-style: none;
+      cursor: pointer;
+      font-family: var(--font-title);
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .work-panel summary::-webkit-details-marker { display: none; }
+    .work-panel summary::after {
+      content: "";
+      width: 0.5rem;
+      height: 0.5rem;
+      flex: none;
+      border-right: 2px solid var(--blue);
+      border-bottom: 2px solid var(--blue);
+      transform: rotate(45deg);
+      transition: transform 0.2s ease;
+    }
+    .work-panel[open] summary::after { transform: rotate(225deg); }
+    .work-panel summary:hover { background: var(--hover-bg); }
+    .work-panel[open] summary { border-bottom: 1px solid var(--border); border-radius: 12px 12px 0 0; }
+    .hero .in-progress-intro { margin: 0; padding: 1rem 1.1rem 0; max-width: none; color: var(--muted); font-size: 0.9rem; }
+    .work-list { margin: 0; padding: 0 1.1rem; list-style: none; }
+    .work-item { padding: 1rem 0; }
+    .work-item + .work-item { border-top: 1px solid var(--border); }
+    .work-item h3 { margin: 0; font-family: var(--font-title); font-size: 1rem; line-height: 1.4; overflow-wrap: anywhere; }
+    .hero .work-item p { margin: 0.4rem 0 0; max-width: none; color: var(--muted); font-size: 0.9rem; overflow-wrap: anywhere; }
+
     /* ---------- Footer ---------- */
 
     footer { margin-top: auto; border-top: 1px solid var(--border); padding: 1.75rem 0; color: var(--muted); font-size: 0.9rem; }
@@ -365,6 +403,7 @@
     QUICK MAP: WHERE TO CHANGE THINGS
     1. Project cards ........ search this file for NEW PROJECTS GO ABOVE THIS LINE.
                               The full step-by-step tutorial is right below it.
+    In-progress list ........ search for HOW TO EDIT THIS LIST.
     2. Heading and intro ..... the <h1> and the <p> under it, in the hero section.
     3. Top-right button ...... the "My GitHub" link in the nav.
     4. Colors ............... the TUTORIAL: COLORS note at the top of the style section.
@@ -388,15 +427,37 @@
       <a class="btn btn-primary btn-pill" href="https://github.com/eeldii">My GitHub</a>
     </nav>
 
+
     <section class="hero">
       <h1>My Projects</h1>
       <p>Experiments and tools I’ve built. Some are live sites, others are code on GitHub to check out.</p>
+      <div class="in-progress">
+        <details class="work-panel">
+          <summary>In progress</summary>
+          <p class="in-progress-intro">Projects I’m currently working on.</p>
+        <!-- HOW TO EDIT THIS LIST
+          Replace the example below with your own project name and description.
+          To add a project, copy the whole <li class="work-item">...</li> block
+          and paste it inside this list. The description is optional.
+          No links, images, dates or project numbers are required.
+          These entries are separate from the published project counts and filters.
+        -->
+        <ul class="work-list">
+          <!-- Example entry: replace with your own project. -->
+          <li class="work-item">
+            <h3>Private Banking customer relations terminal</h3>
+            <p>Helps private bankers build stronger client relationships through personalized contact suggestions.</p>
+          </li>
+        </ul>
+        </details>
+      </div>
       <div class="stat">
         <span class="stat-num" id="total">1</span>
         <span class="stat-label" id="total-label">Project</span>
         <span class="stat-sub" id="breakdown"></span>
       </div>
     </section>
+
 
     <div class="filters" role="group" aria-label="Filter projects">
       <button class="pill" type="button" data-filter="all" aria-pressed="true">All <span class="n"></span></button>
