@@ -101,6 +101,28 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    body { isolation: isolate; }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -6%;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at 12% 24%, rgba(41, 98, 255, 0.13), transparent 42%),
+        radial-gradient(ellipse at 88% 70%, rgba(44, 176, 190, 0.10), transparent 45%);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      body::before { animation: ambient-drift 22s ease-in-out infinite alternate; }
+    }
+
+    @keyframes ambient-drift {
+      from { transform: translate(-3%, 2%); }
+      to { transform: translate(3%, -2%); }
+    }
+
     a { color: inherit; }
 
     :focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
@@ -478,7 +500,7 @@
             <p class="desc">A calculator comparing immediate student-loan repayment with investing and repaying the loan in monthly instalments.</p>
             <p class="url">https://github.com/eeldii/Opintolaina-vs-sijoittaminen</p>
             <dl class="stats">
-              <div><dt>Created</dt><dd><time datetime="2026-11-16">2026-11-16</time></dd></div>
+              <div><dt>Created</dt><dd><time datetime="2026-11-16">November 2026</time></dd></div>
             </dl>
             <div class="actions">
               <a class="btn btn-primary" href="https://eeldii.github.io/Opintolaina-vs-sijoittaminen/">Open page</a>
@@ -497,7 +519,7 @@
             <p class="desc">A browser-based calculator comparing Finnish unlisted-company dividend taxation across seven scenarios. Includes scenario graphs, light and dark themes, calculation explanations, and Excel (.xlsx), JSON and print/PDF exports.</p>
             <p class="url">github.com/eeldii/Unlisted-dividends-tax-calculator</p>
             <dl class="stats">
-              <div><dt>Created</dt><dd><time datetime="2026-11-12">2026-11-12</time></dd></div>
+              <div><dt>Created</dt><dd><time datetime="2026-11-12">November 2026</time></dd></div>
             </dl>
             <div class="actions">
               <a class="btn btn-primary" href="https://eeldii.github.io/Unlisted-dividends-tax-calculator/">Open page</a>
@@ -516,7 +538,7 @@
             <p class="desc">An offline Python desktop app for exploring how macroeconomic changes could affect stocks and bonds, with editable assumptions, scenario timelines, and an interactive country map. Mostly done as an exercise, not to predict scenarios very accurately.</p>
             <p class="url">https://github.com/eeldii/Public-Macro-Scenario-Simulator</p>
             <dl class="stats">
-              <div><dt>Created</dt><dd><time datetime="2026-11-11">2026-11-1</time></dd></div>
+              <div><dt>Created</dt><dd><time datetime="2026-11-11">November 2026</time></dd></div>
             </dl>
             <div class="actions">
               <a class="btn btn-outline" href="https://github.com/eeldii/Public-Macro-Scenario-Simulator">View code</a>
@@ -534,7 +556,7 @@
             <p class="desc">I built a basic financial research terminal which shows ticker-specific data, news sentiment and macroeconomic data. This program runs on Python 3.12, so unfortunately it is not available on GitHub Pages. Latest version: v5.</p>
             <p class="url">https://github.com/eeldii/Finance-research-terminal</p>
             <dl class="stats">
-              <div><dt>Created</dt><dd><time datetime="2026-11-02">2026-11-02</time></dd></div>
+              <div><dt>Created</dt><dd><time datetime="2026-11-02">November 2026</time></dd></div>
             </dl>
             <div class="actions">
               <a class="btn btn-outline" href="https://github.com/eeldii/Finance-research-terminal">View code</a>
@@ -553,7 +575,7 @@
             <p class="desc">I wanted to find out if rebalancing between a 60/40, 70/30 and a 80/20 portfolio simply by looking at the VIX-index results in better risk adjusted returns. Latest model available both in code and GitHub pages.</p>
             <p class="url">eeldii.github.io/vix-adjusted-60-40</p>
             <dl class="stats">
-              <div><dt>Created</dt><dd><time datetime="2026-10-28">2026-10-28</time></dd></div>
+              <div><dt>Created</dt><dd><time datetime="2026-10-28">October 2026</time></dd></div>
             </dl>
             <div class="actions">
               <a class="btn btn-primary" href="https://eeldii.github.io/Public-VIX-60-40/">Open page</a>
@@ -573,7 +595,7 @@
             <p class="desc">I wanted to see if buying stocks when their RSI is low can beat buying and holding SPY. The latest version includes a simple leveraged trading algorithm. This was my very first project.</p>
             <p class="url">https://github.com/eeldii/Public-RSI-leverage-trade-model</p>
             <dl class="stats">
-              <div><dt>Created</dt><dd><time datetime="2026-10-26">2026-10-26</time></dd></div>
+              <div><dt>Created</dt><dd><time datetime="2026-10-26">October 2026</time></dd></div>
             </dl>
             <div class="actions">
               <a class="btn btn-primary" href="https://eeldii.github.io/Public-RSI-leverage-trade-model/">Open page</a>
@@ -765,7 +787,7 @@
       document.getElementById('breakdown').textContent = parts.join(', ');
 
       // Format the creation dates
-      var dateFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+      var dateFormat = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' });
       cards.forEach(function (card) {
         var time = card.querySelector('time');
         if (time) {
