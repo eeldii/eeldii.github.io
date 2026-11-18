@@ -28,6 +28,7 @@
 
     <span data-key="student-loan-title">Opintolaina vs sijoittaminen</span>
     <span data-key="student-loan-description">Tämä laskuri vertailee kahta eri opintolainan maksuvaihtoehtoa: välitön maksu vs sijoittaminen ja hiljalleen maksaminen.</span>
+    <span data-key="student-loan-pin-note"></span>
 
     <span data-key="dividend-tax-title">Listaamattomien yritysten osinkoverotuslaskuri</span>
     <span data-key="dividend-tax-description">Laskuri, jolla voi tarkastella listaamattomien yhtiöiden osingon verotusta eri skenaarioissa. Mahdollisuus myös Excel, JSON ja PDF vientiin.</span>
@@ -52,6 +53,7 @@
     <span data-key="code-only">Vain koodi</span>
     <span data-key="my-github">GitHub-profiilini</span>
     <span data-key="in-progress-label">Työn alla</span>
+    <span data-key="pinned-project">Projektinosto</span>
     <span data-key="project-image">Kuvaaja tai kuvakaappaus projektista</span>
     <span data-key="macro-simulator-image">Makrotalouden skenaariosimulaattorin käyttöliittymä</span>
     <span data-key="research-terminal-image">Kuvakaappaus rahoitusanalyysin sovelluksesta</span>
@@ -297,6 +299,63 @@
     .stat-label { display: block; margin-top: 0.4rem; color: var(--muted); font-size: 0.95rem; }
     .stat-sub { display: block; margin-top: 0.15rem; color: var(--muted); font-size: 0.85rem; }
     .stat-sub:empty { display: none; }
+
+    /* ---------- Pinned project ---------- */
+
+    .pinned-project {
+      --pin-gold: #be8b32;
+      width: 100%;
+      max-width: 54rem;
+      margin: 0 auto 2rem;
+    }
+
+    .pinned-project .card,
+    .pinned-project .card:hover { border: 2px solid var(--pin-gold); }
+
+    .pinned-project .card-body { padding: clamp(1.1rem, 2.5vw, 1.6rem); }
+    .pinned-project .tile::after { display: none; }
+
+    .pinned-label {
+      display: inline-flex;
+      align-self: flex-start;
+      align-items: center;
+      gap: 0.4rem;
+      margin: 0;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      background: #ffe2a0;
+      color: #563909;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .pinned-title {
+      margin: 0;
+      font-family: var(--font-title);
+      font-size: clamp(1.75rem, 3.6vw, 2.4rem);
+      line-height: 1.1;
+      text-wrap: balance;
+      overflow-wrap: anywhere;
+    }
+
+    .grid .pin-note { display: none; }
+
+    .pinned-project .pin-note {
+      margin: 0;
+      padding-inline-start: 0.75rem;
+      border-inline-start: 3px solid var(--pin-gold);
+      font-size: 0.95rem;
+      overflow-wrap: anywhere;
+    }
+
+    @media (min-width: 42rem) {
+      .pinned-project .card {
+        display: grid;
+        grid-template-columns: minmax(0, 4fr) minmax(0, 5fr);
+      }
+
+      .pinned-project .tile { aspect-ratio: auto; }
+    }
 
     /* ---------- Filter ---------- */
 
@@ -692,6 +751,7 @@
     1. Project cards ........ search this file for NEW PROJECTS GO ABOVE THIS LINE.
                               The full step-by-step tutorial is right below it.
     In-progress list ........ search for HOW TO EDIT THIS LIST.
+    Pinned project .......... search for HOW TO PIN A PROJECT.
     2. Heading and intro ..... the <h1> and the <p> under it, in the hero section.
     3. Top-right button ...... the "My GitHub" link in the nav.
     4. Colors ............... the TUTORIAL: COLORS note at the top of the style section.
@@ -750,13 +810,31 @@
     </section>
 
 
-    <div class="filters" role="group" aria-label="Filter projects" data-fi-aria-label="filter-projects">
-      <button class="pill" type="button" data-filter="all" aria-pressed="true"><span data-fi="all-projects">All</span> <span class="n"></span></button>
-      <button class="pill" type="button" data-filter="pages" aria-pressed="false">GitHub Pages <span class="n"></span></button>
-      <button class="pill" type="button" data-filter="code" aria-pressed="false"><span data-fi="code-only">Code only</span> <span class="n"></span></button>
-    </div>
-
     <main>
+      <section class="pinned-project" id="pinned-project" aria-labelledby="pinned-label" hidden>
+        <p class="pinned-label" id="pinned-label">
+          <span aria-hidden="true">★</span>
+          <span data-fi="pinned-project">Featured project</span>
+        </p>
+      </section>
+
+      <div class="filters" role="group" aria-label="Filter projects" data-fi-aria-label="filter-projects">
+        <button class="pill" type="button" data-filter="all" aria-pressed="true"><span data-fi="all-projects">All</span> <span class="n"></span></button>
+        <button class="pill" type="button" data-filter="pages" aria-pressed="false">GitHub Pages <span class="n"></span></button>
+        <button class="pill" type="button" data-filter="code" aria-pressed="false"><span data-fi="code-only">Code only</span> <span class="n"></span></button>
+      </div>
+
+      <!-- HOW TO PIN A PROJECT
+        Move data-pinned to the opening <article> tag of the project you want
+        to pin. Add it to only one card. Remove it to hide the pinned section.
+        The pinned card also appears in the general list.
+
+        To share why you featured a project, write your note inside the
+        <p class="pin-note">...</p> line below its description. The note only
+        appears in the featured card. You can copy that line to another
+        project. To translate the note, give that line its own data-fi key
+        and add a matching data-key entry in the Finnish text template.
+      -->
       <div class="grid" id="grid">
         <article class="card" data-kind="pages">
           <div class="tile">
@@ -798,7 +876,7 @@
             </div>
           </div>
         </article>
-        <article class="card" data-kind="code">
+        <article class="card" data-kind="code" data-pinned>
           <div class="tile">
             <img class="shot" src="images/macroscenarios.png" alt="The UI" data-fi-alt="macro-simulator-image" loading="lazy" onerror="this.remove()">
             <span class="badge"></span>
@@ -807,13 +885,14 @@
           </div>
           <div class="card-body">
             <p class="desc" data-fi="macro-simulator-description">An offline Python desktop app for exploring how macroeconomic changes could affect stocks and bonds, with editable assumptions, scenario timelines, and an interactive country map. Mostly done as an exercise, not to predict scenarios very accurately.</p>
+                        <p class="pin-note" data-fi="macro-scenario-pin-note">"Realistically modeling these effects is much harder, so I built the simulator as a practice project to learn how to develop forecasting tools. The results are illustrative. The default asset sensitivities are based on historical averages, with some values simplified."</p>
             <p class="url">https://github.com/eeldii/Public-Macro-Scenario-Simulator</p>
             <dl class="stats">
               <div><dt data-fi="created">Created</dt><dd><time datetime="2026-11-11">November 2026</time></dd></div>
             </dl>
             <div class="actions">
               <a class="btn btn-outline" href="https://github.com/eeldii/Public-Macro-Scenario-Simulator" data-fi="view-code">View code</a>
-              <a class="btn docs-link" href="" data-fi="documentation">Documentation</a>
+              <a class="btn docs-link" href="https://github.com/eeldii/Public-Macro-Scenario-Simulator/blob/main/Documentation.md" data-fi="documentation">Documentation</a>
             </div>
           </div>
         </article>
@@ -1075,8 +1154,22 @@
         link.setAttribute('href', href);
       });
 
+      var cards = Array.from(document.querySelectorAll('#grid > .card'));
+      var pinnedCard = cards.find(function (card) { return card.hasAttribute('data-pinned'); });
+      var pinnedNote;
+      if (pinnedCard) {
+        var pinnedSection = document.getElementById('pinned-project');
+        var pinnedCopy = pinnedCard.cloneNode(true);
+        pinnedCopy.removeAttribute('data-pinned');
+        var pinnedTitle = pinnedCopy.querySelector('.tile h2');
+        pinnedTitle.classList.add('pinned-title');
+        pinnedCopy.querySelector('.card-body').prepend(document.getElementById('pinned-label'), pinnedTitle);
+        pinnedNote = pinnedCopy.querySelector('.pin-note');
+        pinnedSection.appendChild(pinnedCopy);
+        pinnedSection.hidden = false;
+      }
+
       // Counts, based on each card's data-kind
-      var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
       var pages = cards.filter(function (c) { return c.dataset.kind === 'pages'; }).length;
       var code = cards.filter(function (c) { return c.dataset.kind === 'code'; }).length;
       document.getElementById('total').textContent = cards.length;
@@ -1127,6 +1220,8 @@
           }
         });
 
+        if (pinnedNote) pinnedNote.hidden = !pinnedNote.textContent.trim();
+
         function label(key, english) {
           return isFinnish ? finnishText.get(key) || english : english;
         }
@@ -1147,12 +1242,9 @@
         var dateFormat = new Intl.DateTimeFormat(isFinnish ? 'fi-FI' : 'en-GB', {
           month: 'long', year: 'numeric', timeZone: 'UTC'
         });
-        cards.forEach(function (card) {
-          var time = card.querySelector('time');
-          if (time) {
-            var date = new Date(time.getAttribute('datetime') + 'T00:00:00Z');
-            if (!isNaN(date)) time.textContent = dateFormat.format(date);
-          }
+        document.querySelectorAll('.card time[datetime]').forEach(function (time) {
+          var date = new Date(time.getAttribute('datetime') + 'T00:00:00Z');
+          if (!isNaN(date)) time.textContent = dateFormat.format(date);
         });
       }
 
